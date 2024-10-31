@@ -18,6 +18,26 @@ npm install
 
 ## Usage
 
+### Command Line Usage
+
+After installing the package globally or locally, you can use the `build-genie` command in the command prompt to generate the build information file.
+
+To use it via the command line, run:
+
+```bash
+npx build-genie generate-file --filepath /lib/build-info.json
+```
+
+This will generate a build information file at the specified location.
+
+You can also create an endpoint to serve the generated information by running:
+
+```bash
+npx build-genie create-endpoint --buildInfoPath /lib/build-info.json
+```
+
+### Programmatic Usage
+
 ### Generating Build Information File
 
 After installing the package, you can generate the build information file as follows:
