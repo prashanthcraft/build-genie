@@ -1,26 +1,26 @@
+import appRootPath from "app-root-path";
+import { gitDescribeSync } from "git-describe";
+import currentGitBranch from "current-git-branch";
+import { NotFoundError } from "rest-api-errors";
+import path from "path";
+import * as fs from "fs";
+import { NextFunction, Request, Response } from "express";
 
-import appRootPath from 'app-root-path';
-import { gitDescribeSync } from 'git-describe';
-import currentGitBranch from 'current-git-branch';
-import { NotFoundError } from 'rest-api-errors';
-import path from 'path';
-import * as fs from 'fs';
-
-if (process.env.NODE_ENV !== 'development' && !process.env.K_CONFIGURATION) {
-  appRootPath.setPath('/workspace');
+if (process.env.NODE_ENV !== "development" && !process.env.K_CONFIGURATION) {
+  appRootPath.setPath("/workspace");
 }
 
-export function generateFile(filepath: string = '/lib/build-info.json'): void {
+export function generateFile(filepath: string = "/lib/build-info.json"): void {
   const { hash, tag, dirty } = gitDescribeSync();
   let name: string;
   let version: string;
 
   try {
-    const packageInfo = require(path.resolve('package.json'));
+    const packageInfo = require(path.resolve("package.json"));
     name = packageInfo.name;
     version = packageInfo.version;
   } catch (err) {
-    console.error('ERROR: Command must be run from the root of your project.');
+    console.error("ERROR: Command must be run from the root of your project.");
     process.exit(1);
   }
 
@@ -28,7 +28,7 @@ export function generateFile(filepath: string = '/lib/build-info.json'): void {
 
   const buildInfo = {
     sha: hash.substring(1),
-    tag: tag ?? '',
+    tag: tag ?? "",
     branch: currentGitBranch(),
     uncommitted: dirty,
     buildDtm: new Date(),
@@ -36,15 +36,17 @@ export function generateFile(filepath: string = '/lib/build-info.json'): void {
     version,
   };
 
-  fs.writeFileSync(filepath, JSON.stringify(buildInfo, null, 2), 'utf-8');
+  fs.writeFileSync(filepath, JSON.stringify(buildInfo, null, 2), "utf-8");
 }
 
-export function createBuildInfoEndpoint(buildInfoPath: string = '/lib/build-info.json') {
-  return async (req: any, resp: any, next: any) => {
+export function createBuildInfoEndpoint(
+  buildInfoPath: string = "/lib/build-info.json"
+) {
+  return async (req: Request, resp: Response, next: NextFunction) => {
     try {
       resp.status(200).send(appRootPath.require(buildInfoPath));
     } catch (err) {
-      next(new NotFoundError('build_info_not_found'));
+      next(new NotFoundError("build_info_not_found"));
     }
   };
 }
