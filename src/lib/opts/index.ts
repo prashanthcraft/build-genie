@@ -68,7 +68,7 @@ export type LegacyConfig =
   | undefined;
 
 /**
- * The configuration object for commit-and-tag-version, which is a superset of the conventional-changelog-config-spec (as of version 2.1.0)
+ * The configuration object for build-genie, which is a superset of the conventional-changelog-config-spec (as of version 2.1.0)
  * This may or may not maintain backwards compatibility with standard-version (as of version 9.5.0).
  */
 export type Config =
@@ -96,17 +96,17 @@ export const getMergedConfig = async (
   const searchDir = cwd ?? process.cwd();
   const pkgJson = (await import('path')).join(searchDir, 'package.json');
   const legacyConf: LegacyConfig = (await import(pkgJson))['standard-version'];
-  const modernConf: Config = (await import(pkgJson))['commit-and-tag-version'];
+  const modernConf: Config = (await import(pkgJson))['build-genie'];
 
   Object.keys(legacyConf ?? {}).forEach((key) => {
     if (catVOnlyFeatures.includes(key as any)) {
       console.warn(
-        `The "${key}" option is a feature of commit-and-tag-version, and is not supported by standard-version.${'\n'}Please move this option to the 'commit-and-tag-version' key.${'\n'}In a future version, this will throw an error.`,
+        `The "${key}" option is a feature of build-genie, and is not supported by standard-version.${'\n'}Please move this option to the 'build-genie' key.${'\n'}In a future version, this will throw an error.`,
       );
     }
     if (modernConf && isin(modernConf, key as any)) {
       console.warn(
-        `"standard-version"."${key}" in package.json is being overridden by "commit-and-tag-version"."${key}". in package.json`,
+        `"standard-version"."${key}" in package.json is being overridden by "build-genie"."${key}". in package.json`,
       );
     }
   });

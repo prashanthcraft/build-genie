@@ -1,6 +1,6 @@
 const versionRegex = /<Version>(.*)<\/Version>/;
 
-export function readVersion(contents: string): string {
+export function readVersion(contents: string): string | undefined {
     const matches = versionRegex.exec(contents);
     if (matches === null || matches.length !== 2) {
         throw new Error(

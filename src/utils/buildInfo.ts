@@ -6,7 +6,7 @@ import path from "path";
 import * as fs from "fs";
 import { NextFunction, Request, Response } from "express";
 
-if (process.env.NODE_ENV !== "development" && !process.env.K_CONFIGURATION) {
+if (process.env['NODE_ENV'] !== "development" && !process.env['K_CONFIGURATION']) {
   appRootPath.setPath("/workspace");
 }
 
@@ -42,7 +42,7 @@ export function generateFile(filepath: string = "/lib/build-info.json"): void {
 export function createBuildInfoEndpoint(
   buildInfoPath: string = "/lib/build-info.json"
 ) {
-  return async (req: Request, resp: Response, next: NextFunction) => {
+  return async (_: Request, resp: Response, next: NextFunction) => {
     try {
       resp.status(200).send(appRootPath.require(buildInfoPath));
     } catch (err) {

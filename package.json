@@ -1,15 +1,29 @@
 {
   "name": "build-genie",
-  "version": "1.0.2",
+  "version": "1.1.6",
   "description": "Build genie a Utility functions to generate and serve build information",
   "author": {
     "name": "Prashanth"
   },
   "main": "dist/index.js",
-  "module": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "bin": {
     "build-genie": "./bin/build-genie.js"
   },
+  "engines": {
+    "node": ">=14"
+  },
+  "keywords": [
+    "conventional-changelog",
+    "recommended",
+    "changelog",
+    "automatic",
+    "workflow",
+    "version",
+    "angular",
+    "standard"
+  ],
   "scripts": {
     "prepublishOnly": "npm run build",
     "prebuild": "rm -rf ./dist",
@@ -54,21 +68,26 @@
   },
   "devDependencies": {
     "@types/chai": "^5.0.1",
+    "@types/current-git-branch": "^1.1.6",
     "@types/express": "^4.17.21",
     "@types/git-semver-tags": "^7.0.0",
-    "@types/jest": "^29.5.14",
+    "@types/mocha": "^10.0.10",
+    "@types/mockery": "^1.4.33",
     "@types/node": "^18.19.63",
+    "@types/shelljs": "^0.8.15",
+    "@types/std-mocks": "^1.0.4",
     "@types/supertest": "^6.0.2",
     "chai": "^5.1.2",
     "express": "^4.21.1",
-    "jest": "^29.7.0",
     "jest-serial-runner": "^1.2.1",
+    "mocha": "^10.8.2",
     "mockery": "^2.1.0",
     "prettier": "^3.4.2",
     "shelljs": "^0.8.5",
     "std-mocks": "^2.0.0",
     "strip-ansi": "^7.1.0",
     "supertest": "^7.0.0",
+    "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.5",
     "typescript": "^5.6.3"
@@ -80,7 +99,7 @@
     "tsconfig": "tsconfig.json",
     "dts": true,
     "entry": [
-      "./src/index.ts"
+      "./src/index.js"
     ],
     "outDir": "./dist",
     "format": [

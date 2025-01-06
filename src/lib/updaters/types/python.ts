@@ -32,6 +32,9 @@ export const writeVersion = function (contents: string, version: string): string
     throw new Error('Version not found in contents');
   }
   const versionLine = lines[versionIndex.lineNumber];
+  if (versionLine === undefined) {
+    throw new Error('Version line is undefined');
+  }
   const newVersionLine = versionLine.replace(versionIndex.version, version);
   lines[versionIndex.lineNumber] = newVersionLine;
   return lines.join('\n');

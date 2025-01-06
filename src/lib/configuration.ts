@@ -33,7 +33,7 @@ export function getConfiguration(): Record<string, any> {
    */
   if (typeof config !== "object") {
     throw new Error(
-      `[commit-and-tag-version] Invalid configuration in ${configPath} provided. Expected an object but found ${typeof config}.`
+      `[build-genie] Invalid configuration in ${configPath} provided. Expected an object but found ${typeof config}.`
     );
   }
 

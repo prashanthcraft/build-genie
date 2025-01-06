@@ -11,7 +11,7 @@ require("chai").should();
 
 function exec() {
   const cli = require("../command");
-  const opt = cli.parse("commit-and-tag-version");
+  const opt = cli.parse("build-genie");
   opt.skip = { commit: true, tag: true };
   return require("../index")(opt);
 }
@@ -120,12 +120,12 @@ describe("config files", () => {
     }
   });
 
-  const configKeys = ["commit-and-tag-version", "standard-version"];
+  const configKeys = ["build-genie", "standard-version"];
 
   configKeys.forEach((configKey) => {
     it(`reads config from package.json key '${configKey}'`, async function () {
       const issueUrlFormat =
-        "https://commit-and-tag-version.company.net/browse/{{id}}";
+        "https://build-genie.company.net/browse/{{id}}";
       mock({
         bump: "minor",
         changelog: ({ preset }) => preset.issueUrlFormat,
