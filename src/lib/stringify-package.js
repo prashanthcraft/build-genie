@@ -18,11 +18,13 @@ https://github.com/npm/stringify-package/blob/main/LICENSE
 
 'use strict';
 
+module.exports = stringifyPackage;
+
 const DEFAULT_INDENT = 2;
 const CRLF = '\r\n';
 const LF = '\n';
 
-export function stringifyPackage(data: any, indent?: any, newline?: string): string {
+function stringifyPackage(data, indent, newline) {
   indent = indent || (indent === 0 ? 0 : DEFAULT_INDENT);
   const json = JSON.stringify(data, null, indent);
 

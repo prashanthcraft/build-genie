@@ -1,14 +1,14 @@
-import { generateFile, createBuildInfoEndpoint } from './utils/buildInfo';
+const bump = require('./lib/lifecycles/bump');
+const changelog = require('./lib/lifecycles/changelog');
+const commit = require('./lib/lifecycles/commit');
+const fs = require('fs');
+const latestSemverTag = require('./lib/latest-semver-tag');
+const path = require('path');
+const printError = require('./lib/print-error');
+const tag = require('./lib/lifecycles/tag');
+const { resolveUpdaterObjectFromArgument } = require('./lib/updaters');
 
-const bump = require('./lib/lifecycles/bump')
-const changelog = require('./lib/lifecycles/changelog')
-const commit = require('./lib/lifecycles/commit')
-const fs = require('fs')
-const latestSemverTag = require('./lib/latest-semver-tag')
-const path = require('path')
-const printError = require('./lib/print-error')
-const tag = require('./lib/lifecycles/tag')
-const { resolveUpdaterObjectFromArgument } = require('./lib/updaters')
+// const buildInfo = require('./utils/buildInfo');
 
 module.exports = async function standardVersion(argv) {
   const defaults = require('./defaults');
@@ -71,7 +71,10 @@ module.exports = async function standardVersion(argv) {
             : false,
       };
       break;
-    } catch (err) {}
+      // eslint-disable-next-line no-unused-vars
+    } catch (err) {
+      /* This probably shouldn't be empty? */
+    }
   }
   try {
     let version;
@@ -93,4 +96,4 @@ module.exports = async function standardVersion(argv) {
   }
 };
 
-module.exports = { generateFile, createBuildInfoEndpoint };
+// module.exports = buildInfo;

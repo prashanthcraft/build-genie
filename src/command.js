@@ -1,16 +1,6 @@
-/*
-I haven't been able to find API docs for yargs that explain the runtime semantics thoroughly enough to describe the types,
-and the types give do not appear to agree with the usage below. This leads me to believe the types are either incorrect or incomplete,
-and adding types to Yargs is outside of scope.
-
-As a compromise, `argv` is manually typed, and the type must be updated as changes are made below. There is a
-[separate isssue](https://github.com/absolute-version/commit-and-tag-version/issues/31) for refactoring the API to bring the CLI
-options to parity with the JSON options, which would likely involve breaking changes.
-*/
-
-import spec from 'conventional-changelog-config-spec/versions/2.1.0/schema.json';
-import { getConfiguration } from './lib/configuration';
-import defaults from './defaults';
+const spec = require('conventional-changelog-config-spec');
+const { getConfiguration } = require('./lib/configuration');
+const defaults = require('./defaults');
 
 const yargs = require('yargs')
   .usage('Usage: $0 [options]')
@@ -57,6 +47,11 @@ const yargs = require('yargs')
     describe: 'Should the git commit and tag be signed?',
     type: 'boolean',
     default: defaults.sign,
+  })
+  .option('signoff', {
+    describe: 'Should the git commit have a "Signed-off-by" trailer',
+    type: 'boolean',
+    default: defaults.signoff,
   })
   .option('no-verify', {
     alias: 'n',
@@ -137,7 +132,7 @@ const yargs = require('yargs')
     default: defaults.npmPublishHint,
     describe: 'Customized publishing hint',
   })
-  .check((argv: any) => {
+  .check((argv) => {
     if (typeof argv.scripts !== 'object' || Array.isArray(argv.scripts)) {
       throw Error('scripts must be an object');
     } else if (typeof argv.skip !== 'object' || Array.isArray(argv.skip)) {
@@ -159,12 +154,11 @@ const yargs = require('yargs')
   .wrap(97);
 
 Object.keys(spec.properties).forEach((propertyKey) => {
-  const propName = propertyKey as keyof typeof spec.properties;
-  const property = spec.properties[propName];
+  const property = spec.properties[propertyKey];
   yargs.option(propertyKey, {
     type: property.type,
     describe: property.description,
-    default: defaults[propName] ? defaults[propName] : property.default,
+    default: defaults[propertyKey] ? defaults[propertyKey] : property.default,
     group: 'Preset Configuration:',
   });
 });
