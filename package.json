@@ -1,6 +1,6 @@
 {
   "name": "build-genie",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "description": "Build genie a Utility functions to generate and serve build information",
   "author": {
     "name": "Prashanth"
@@ -39,20 +39,21 @@
   },
   "dependencies": {
     "app-root-path": "^3.1.0",
-    "rest-api-errors": "^1.3.1",
-    "current-git-branch": "^1.1.0",
     "chalk": "^2.4.2",
     "conventional-changelog": "4.0.0",
     "conventional-changelog-config-spec": "2.1.0",
     "conventional-changelog-conventionalcommits": "6.1.0",
     "conventional-recommended-bump": "7.0.1",
+    "current-git-branch": "^1.1.0",
     "detect-indent": "^6.1.0",
     "detect-newline": "^3.1.0",
     "dotgitignore": "^2.1.0",
     "figures": "^3.2.0",
     "find-up": "^5.0.0",
+    "git-describe": "^4.1.1",
     "git-semver-tags": "^5.0.1",
     "jsdom": "^25.0.1",
+    "rest-api-errors": "^1.3.1",
     "semver": "^7.6.3",
     "w3c-xmlserializer": "^5.0.0",
     "yaml": "^2.6.0",
