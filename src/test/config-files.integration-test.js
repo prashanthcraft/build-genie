@@ -2,7 +2,6 @@
 
 const shell = require('shelljs');
 const fs = require('fs');
-const { describe, it, expect, beforeEach, afterEach } = require('@jest/globals');
 
 const mockers = require('./mocks/jest-mocks');
 
