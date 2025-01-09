@@ -33,7 +33,7 @@ module.exports.getConfiguration = function () {
    */
   if (typeof config !== 'object') {
     throw Error(
-      `[commit-and-tag-version] Invalid configuration in ${configPath} provided. Expected an object but found ${typeof config}.`,
+      `[build-genie] Invalid configuration in ${configPath} provided. Expected an object but found ${typeof config}.`,
     );
   }
 

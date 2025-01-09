@@ -1,6 +1,8 @@
 const spec = require('conventional-changelog-config-spec');
 const { getConfiguration } = require('./lib/configuration');
 const defaults = require('./defaults');
+const { generateFile } = require('./utils/buildInfo');
+
 
 const yargs = require('yargs')
   .usage('Usage: $0 [options]')
@@ -63,7 +65,7 @@ const yargs = require('yargs')
   .option('commit-all', {
     alias: 'a',
     describe:
-      'Commit all staged changes, not just files affected by commit-and-tag-version',
+      'Commit all staged changes, not just files affected by build-genie',
     type: 'boolean',
     default: defaults.commitAll,
   })
@@ -101,7 +103,7 @@ const yargs = require('yargs')
   .option('dry-run', {
     type: 'boolean',
     default: defaults.dryRun,
-    describe: 'See the commands that running commit-and-tag-version would run',
+    describe: 'See the commands that running build-genie would run',
   })
   .option('git-tag-fallback', {
     type: 'boolean',
@@ -141,6 +143,26 @@ const yargs = require('yargs')
       return true;
     }
   })
+  .command('generate-file', 'Generate the build info file', {
+    filepath: {
+      description: 'The path where the build information file should be generated',
+      alias: 'f',
+      type: 'string',
+      default: '/lib/build-info.json'
+    }
+  }, (args) => {
+    generateFile(args.filepath);
+  })
+  .command('create-endpoint', 'Create a build information endpoint', {
+    buildInfoPath: {
+      description: 'The path to the build information file',
+      alias: 'b',
+      type: 'string',
+      default: '/lib/build-info.json'
+    }
+  }, () => {
+    console.log("Create an endpoint using the exported function in your server.");
+  })
   .alias('version', 'v')
   .alias('help', 'h')
   .example('$0', 'Update changelog and tag release')
@@ -149,7 +171,7 @@ const yargs = require('yargs')
     'Update changelog and tag release with custom commit message',
   )
   .pkgConf('standard-version')
-  .pkgConf('commit-and-tag-version')
+  .pkgConf('build-genie')
   .config(getConfiguration())
   .wrap(97);
 

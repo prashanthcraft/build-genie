@@ -29,7 +29,7 @@ const { readFileSync: readFileSyncActual, lstatSync: lstatSyncActual } = fs;
 
 function exec(opt = '', git) {
   if (typeof opt === 'string') {
-    opt = cli.parse(`commit-and-tag-version ${opt}`);
+    opt = cli.parse(`build-genie ${opt}`);
   }
   if (!git) opt.skip = Object.assign({}, opt.skip, { commit: true, tag: true });
   return standardVersion(opt);
@@ -231,11 +231,11 @@ describe('format-commit-message', function () {
   it('works for two {{currentTag}}', function () {
     expect(
       formatCommitMessage(
-        'chore(release): {{currentTag}} \n\n* CHANGELOG: https://github.com/absolute-version/commit-and-tag-version/blob/v{{currentTag}}/CHANGELOG.md',
+        'chore(release): {{currentTag}} \n\n* CHANGELOG: https://github.com/prashanthcraft/build-genie/blob/v{{currentTag}}/CHANGELOG.md',
         '1.0.0',
       ),
     ).toEqual(
-      'chore(release): 1.0.0 \n\n* CHANGELOG: https://github.com/absolute-version/commit-and-tag-version/blob/v1.0.0/CHANGELOG.md',
+      'chore(release): 1.0.0 \n\n* CHANGELOG: https://github.com/prashanthcraft/build-genie/blob/v1.0.0/CHANGELOG.md',
     );
   });
 });
@@ -915,7 +915,7 @@ describe('cli', function () {
     });
   });
 
-  describe('commit-and-tag-version', function () {
+  describe('build-genie', function () {
     afterEach(unmock);
 
     it('should exit on bump error', async function () {
@@ -1168,7 +1168,7 @@ describe('cli', function () {
       });
     });
 
-    it('`packageFiles` are bumped along with `bumpFiles` defaults [commit-and-tag-version#533]', async function () {
+    it('`packageFiles` are bumped along with `bumpFiles` defaults [build-genie#533]', async function () {
       mock({
         bump: 'minor',
         testFiles: [

@@ -25,7 +25,7 @@ module.exports = async function standardVersion(argv) {
     argv.releaseCommitMessageFormat = message.replace(/%s/g, '{{currentTag}}');
     if (!argv.silent) {
       console.warn(
-        '[commit-and-tag-version]: --message (-m) will be removed in the next major release. Use --releaseCommitMessageFormat.',
+        '[build-genie]: --message (-m) will be removed in the next major release. Use --releaseCommitMessageFormat.',
       );
     }
   }
@@ -34,7 +34,7 @@ module.exports = async function standardVersion(argv) {
     argv.header = argv.changelogHeader;
     if (!argv.silent) {
       console.warn(
-        '[commit-and-tag-version]: --changelogHeader will be removed in the next major release. Use --header.',
+        '[build-genie]: --changelogHeader will be removed in the next major release. Use --header.',
       );
     }
   }

@@ -27,7 +27,7 @@ const argv = yargs(hideBin(process.argv))
   }, () => {
     console.log("Create an endpoint using the exported function in your server.");
   })
-  .command('commit-and-tag-version', 'Create Commit and Tag information for the build', {
+  .command('build-genie', 'Create Commit and Tag information for the build', {
     buildInfoPath: {
       description: 'The path to the build information file',
       alias: 'b',
@@ -37,7 +37,7 @@ const argv = yargs(hideBin(process.argv))
   }, () => {
     if(process.version.match(/v(\d+)\./)[1] < 6) {
       console.error(
-        "commit-and-tag-version: Node v6 or greater is required. `commit-and-tag-version` did not run."
+        "build-genie: Node v6 or greater is required. `build-genie` did not run."
       );
     }
     console.log("Creating commit and tag information for the build...");

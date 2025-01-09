@@ -18,7 +18,7 @@ const consoleErrorSpy = jest
 function exec(opt = '') {
   if (typeof opt === 'string') {
     const cli = require('../command');
-    opt = cli.parse(`commit-and-tag-version ${opt}`);
+    opt = cli.parse(`build-genie ${opt}`);
   }
   return require('../index')(opt);
 }
@@ -133,7 +133,7 @@ describe('precommit hook', function () {
 
   it('should run the precommit hook when provided', async function () {
     writePackageJson('1.0.0', {
-      'commit-and-tag-version': {
+      'build-genie': {
         scripts: { precommit: 'node scripts/precommit' },
       },
     });
@@ -151,7 +151,7 @@ describe('precommit hook', function () {
 
   it('should run the precommit hook and throw error when precommit fails', async function () {
     writePackageJson('1.0.0', {
-      'commit-and-tag-version': {
+      'build-genie': {
         scripts: { precommit: 'node scripts/precommit' },
       },
     });
@@ -174,7 +174,7 @@ describe('precommit hook', function () {
 
   it('should allow an alternate commit message to be provided by precommit script', async function () {
     writePackageJson('1.0.0', {
-      'commit-and-tag-version': {
+      'build-genie': {
         scripts: { precommit: 'node scripts/precommit' },
       },
     });

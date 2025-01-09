@@ -3,7 +3,7 @@ const fs = require('fs');
 
 function exec(opt) {
   const cli = require('../command');
-  opt = cli.parse(`commit-and-tag-version ${opt} --silent`);
+  opt = cli.parse(`build-genie ${opt} --silent`);
   opt.skip = { commit: true, tag: true };
   return require('../index')(opt);
 }

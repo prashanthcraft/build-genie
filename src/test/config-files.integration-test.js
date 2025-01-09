@@ -8,7 +8,7 @@ const mockers = require('./mocks/jest-mocks');
 
 function exec() {
   const cli = require('../command');
-  const opt = cli.parse('commit-and-tag-version');
+  const opt = cli.parse('build-genie');
   opt.skip = { commit: true, tag: true };
   return require('../index')(opt);
 }
