@@ -1,7 +1,7 @@
 const config = {
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{js,jsx,ts}',
+    'src/**/*.{js,jsx,ts,tsx}',
     '!**/node_modules/**',
     '!**/tmp/**',
     '!**/test/**',

@@ -977,8 +977,8 @@ describe('cli', function () {
         mock({
           bump: 'minor',
           realTestFiles: [
-            { filename: 'mix.exs', path: './test/mocks/mix.exs' },
-            { filename: 'version.txt', path: './test/mocks/version.txt' },
+            { filename: 'mix.exs', path: './src/test/mocks/mix.exs' },
+            { filename: 'version.txt', path: './src/test/mocks/version.txt' },
           ],
           tags: ['v1.0.0'],
         });
@@ -988,7 +988,7 @@ describe('cli', function () {
             'version.txt',
             {
               filename: 'mix.exs',
-              updater: './test/mocks/updater/customer-updater',
+              updater: './src/test/mocks/updater/customer-updater',
             },
           ],
         });
@@ -1014,7 +1014,7 @@ describe('cli', function () {
           realTestFiles: [
             {
               filename: 'VERSION_TRACKER.txt',
-              path: './test/mocks/VERSION-1.0.0.txt',
+              path: './src/test/mocks/VERSION-1.0.0.txt',
             },
           ],
         });
@@ -1035,7 +1035,7 @@ describe('cli', function () {
           realTestFiles: [
             {
               filename: 'increment-version.txt',
-              path: './test/mocks/increment-version.txt',
+              path: './src/test/mocks/increment-version.txt',
             },
           ],
         });
@@ -1052,7 +1052,7 @@ describe('cli', function () {
             bumpFiles: [
               {
                 filename: 'increment-version.txt',
-                updater: './test/mocks/updater/increment-updater',
+                updater: './src/test/mocks/updater/increment-updater',
               },
             ],
             dryRun: true,
@@ -1077,7 +1077,7 @@ describe('cli', function () {
           realTestFiles: [
             {
               filename: 'VERSION_TRACKER.txt',
-              path: './test/mocks/VERSION-6.3.1.txt',
+              path: './src/test/mocks/VERSION-6.3.1.txt',
             },
           ],
         });
@@ -1103,7 +1103,7 @@ describe('cli', function () {
           realTestFiles: [
             {
               filename: 'VERSION_TRACKER.txt',
-              path: './test/mocks/VERSION-6.3.1.txt',
+              path: './src/test/mocks/VERSION-6.3.1.txt',
             },
           ],
         });
@@ -1133,7 +1133,7 @@ describe('cli', function () {
 
       it('bumps version in Python `pyproject.toml` file', async function () {
         const expected = fs.readFileSync(
-          './test/mocks/pyproject-1.1.0.toml',
+          './src/test/mocks/pyproject-1.1.0.toml',
           'utf-8',
         );
 
@@ -1143,7 +1143,7 @@ describe('cli', function () {
           realTestFiles: [
             {
               filename,
-              path: './test/mocks/pyproject-1.0.0.toml',
+              path: './src/test/mocks/pyproject-1.0.0.toml',
             },
           ],
         });
@@ -1184,7 +1184,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename: 'manifest.json',
-            path: './test/mocks/manifest-6.3.1.json',
+            path: './src/test/mocks/manifest-6.3.1.json',
           },
         ],
         tags: ['v1.0.0'],
@@ -1218,7 +1218,7 @@ describe('cli', function () {
 
     it('bumps version in OpenAPI `openapi.yaml` file with CRLF Line Endings', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/openapi-1.3.0-crlf.yaml',
+        './src/test/mocks/openapi-1.3.0-crlf.yaml',
         'utf-8',
       );
       const filename = 'openapi.yaml';
@@ -1227,7 +1227,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/openapi-1.2.3-crlf.yaml',
+            path: './src/test/mocks/openapi-1.2.3-crlf.yaml',
           },
         ],
       });
@@ -1252,7 +1252,7 @@ describe('cli', function () {
 
     it('bumps version in OpenAPI `openapi.yaml` file with LF Line Endings', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/openapi-1.3.0-lf.yaml',
+        './src/test/mocks/openapi-1.3.0-lf.yaml',
         'utf-8',
       );
       const filename = 'openapi.yaml';
@@ -1261,7 +1261,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/openapi-1.2.3-lf.yaml',
+            path: './src/test/mocks/openapi-1.2.3-lf.yaml',
           },
         ],
       });
@@ -1286,7 +1286,7 @@ describe('cli', function () {
 
     it('bumps version in Maven `pom.xml` file with CRLF Line Endings', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/pom-6.4.0-crlf.xml',
+        './src/test/mocks/pom-6.4.0-crlf.xml',
         'utf-8',
       );
       const filename = 'pom.xml';
@@ -1295,7 +1295,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/pom-6.3.1-crlf.xml',
+            path: './src/test/mocks/pom-6.3.1-crlf.xml',
           },
         ],
       });
@@ -1320,7 +1320,7 @@ describe('cli', function () {
 
     it('bumps version in Maven `pom.xml` file with LF Line Endings', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/pom-6.4.0-lf.xml',
+        './src/test/mocks/pom-6.4.0-lf.xml',
         'utf-8',
       );
       const filename = 'pom.xml';
@@ -1329,7 +1329,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/pom-6.3.1-lf.xml',
+            path: './src/test/mocks/pom-6.3.1-lf.xml',
           },
         ],
       });
@@ -1354,7 +1354,7 @@ describe('cli', function () {
 
     it('bumps version in Gradle `build.gradle.kts` file', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/build-6.4.0.gradle.kts',
+        './src/test/mocks/build-6.4.0.gradle.kts',
         'utf-8',
       );
 
@@ -1364,7 +1364,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/build-6.3.1.gradle.kts',
+            path: './src/test/mocks/build-6.3.1.gradle.kts',
           },
         ],
       });
@@ -1390,7 +1390,7 @@ describe('cli', function () {
 
     it('bumps version in .NET `Project.csproj` file', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/Project-6.4.0.csproj',
+        './src/test/mocks/Project-6.4.0.csproj',
         'utf-8',
       );
       const filename = 'Project.csproj';
@@ -1399,7 +1399,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/Project-6.3.1.csproj',
+            path: './src/test/mocks/Project-6.3.1.csproj',
           },
         ],
       });
@@ -1471,7 +1471,7 @@ describe('cli', function () {
 
     it('bumps version in Dart `pubspec.yaml` file', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/pubspec-6.4.0.yaml',
+        './src/test/mocks/pubspec-6.4.0.yaml',
         'utf-8',
       );
 
@@ -1481,7 +1481,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/pubspec-6.3.1.yaml',
+            path: './src/test/mocks/pubspec-6.3.1.yaml',
           },
         ],
       });
@@ -1507,7 +1507,7 @@ describe('cli', function () {
 
     it('bumps version in Dart `pubspec.yaml` file with CRLF line endings', async function () {
       const expected = fs.readFileSync(
-        './test/mocks/pubspec-6.4.0-crlf.yaml',
+        './src/test/mocks/pubspec-6.4.0-crlf.yaml',
         'utf-8',
       );
 
@@ -1517,7 +1517,7 @@ describe('cli', function () {
         realTestFiles: [
           {
             filename,
-            path: './test/mocks/pubspec-6.3.1-crlf.yaml',
+            path: './src/test/mocks/pubspec-6.3.1-crlf.yaml',
           },
         ],
       });

@@ -36,7 +36,6 @@ coverage/
 /.settings
 
 # Dependencies
-package-lock.json
 yarn.lock
 
 # temp dirs

@@ -1,3 +1,5 @@
+// const buildInfo = require('./utils/buildInfo');
+
 const bump = require('./lib/lifecycles/bump');
 const changelog = require('./lib/lifecycles/changelog');
 const commit = require('./lib/lifecycles/commit');
@@ -7,8 +9,6 @@ const path = require('path');
 const printError = require('./lib/print-error');
 const tag = require('./lib/lifecycles/tag');
 const { resolveUpdaterObjectFromArgument } = require('./lib/updaters');
-
-// const buildInfo = require('./utils/buildInfo');
 
 module.exports = async function standardVersion(argv) {
   const defaults = require('./defaults');
@@ -25,7 +25,7 @@ module.exports = async function standardVersion(argv) {
     argv.releaseCommitMessageFormat = message.replace(/%s/g, '{{currentTag}}');
     if (!argv.silent) {
       console.warn(
-        '[build-genie]: --message (-m) will be removed in the next major release. Use --releaseCommitMessageFormat.',
+        '[commit-and-tag-version]: --message (-m) will be removed in the next major release. Use --releaseCommitMessageFormat.',
       );
     }
   }
@@ -34,7 +34,7 @@ module.exports = async function standardVersion(argv) {
     argv.header = argv.changelogHeader;
     if (!argv.silent) {
       console.warn(
-        '[build-genie]: --changelogHeader will be removed in the next major release. Use --header.',
+        '[commit-and-tag-version]: --changelogHeader will be removed in the next major release. Use --header.',
       );
     }
   }

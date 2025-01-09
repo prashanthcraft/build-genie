@@ -4,64 +4,73 @@ import jest from "eslint-plugin-jest";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 /**
- * @type {import("eslint").Linter.Config}
+ * @type {import("eslint").Linter.FlatConfig[]}
  */
 export default [
   {
-    "ignores": [".git/", ".github/", ".husky/", ".scannerwork/", ".vscode/", "coverage/", "node_modules/"],
-    "name": "Files to ignore"
-  },
-  {
-    ...eslintConfigPrettier,
-    "name": "Prettier"
+    ignorePatterns: [
+      ".git/",
+      ".github/",
+      ".husky/",
+      ".scannerwork/",
+      ".vscode/",
+      "coverage/",
+      "node_modules/",
+    ],
+    name: "Files to ignore",
   },
   {
     ...js.configs.recommended,
-    "files": ["**/*.{js,cjs,mjs}"],
-    "languageOptions": {
-      "ecmaVersion": 2023
+    files: ["**/*.{js,cjs,mjs}"],
+    languageOptions: {
+      ecmaVersion: 2023,
     },
-    "name": "JavaScript files",
-    "rules": {
+    name: "JavaScript files",
+    rules: {
       ...js.configs.recommended.rules,
       "no-var": "error",
       "no-unused-vars": [
         "error",
         {
-          "argsIgnorePattern": "_.*"
-        }
-      ]
-    }
+          argsIgnorePattern: "_.*",
+          varsIgnorePattern: "_.*",
+        },
+      ],
+    },
   },
   {
-    "files": ["**/*.mjs"],
-    "languageOptions": {
-      "sourceType": "module"
+    files: ["**/*.mjs"],
+    languageOptions: {
+      sourceType: "module",
     },
-    "name": "JavaScript modules"
+    name: "JavaScript modules",
   },
   {
-    "files": ["**/*.{js,cjs,mjs}"],
-    "languageOptions": {
-      "globals": {
-        ...globals.node
-      }
+    files: ["**/*.{js,cjs,mjs}"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
     },
-    "name": "Node.js files"
+    name: "Node.js files",
   },
   {
     ...jest.configs["flat/recommended"],
-    "files": ["test/**/*{spec,test}.{js,cjs,mjs}", "test/mocks/jest-mocks.js"],
-    "languageOptions": {
-      "globals": {
-        ...globals.jest
-      }
+    files: ["src/test/**/*{spec,test}.{js,cjs,mjs,ts,tsx}", "src/test/mocks/jest-mocks.js"],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
     },
-    "name": "Test files",
-    "rules": {
+    name: "Test files",
+    rules: {
       ...jest.configs["flat/recommended"].rules,
       "jest/prefer-expect-assertions": "off",
-      "jest/expect-expect": "off"
-    }
-  }
+      "jest/expect-expect": "off",
+    },
+  },
+  {
+    ...eslintConfigPrettier,
+    name: "Prettier",
+  },
 ];
