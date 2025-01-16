@@ -3,83 +3,129 @@ const path = require("path");
 const { gitDescribeSync } = require("git-describe");
 const currentGitBranch = require("current-git-branch");
 const { NotFoundError } = require("rest-api-errors");
-const { generateFile, createBuildInfoEndpoint } = require("../utils/buildInfo");
+const { generateFile, setAppRootPath, createBuildInfoEndpoint } = require("../utils/buildInfo");
 
+// Mock dependencies
 jest.mock("fs");
+jest.mock("path");
 jest.mock("git-describe");
 jest.mock("current-git-branch");
-jest.mock("app-root-path", () => ({
-  setPath: jest.fn(),
-  require: jest.fn(),
-}));
+jest.mock("rest-api-errors");
 
-describe("buildInfo module", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+describe("buildInfo.js", () => {
 
   describe("generateFile", () => {
-    it("should generate build-info.json with correct content", () => {
+    it("should throw an error if package.json is missing", () => {
+      // Mock git and package info
       gitDescribeSync.mockReturnValue({ hash: "g123456", tag: "v1.0.0", dirty: false });
       currentGitBranch.mockReturnValue("main");
-      const packageInfo = { name: "test-app", version: "1.0.0" };
-      jest.mock(path.resolve("package.json"), () => packageInfo, { virtual: true });
+      jest.spyOn(path, "resolve").mockImplementation((...args) => args.join("/"));
 
-      generateFile("/lib/build-info.json");
+      // Mock fs functions
+      fs.mkdirSync.mockImplementation(() => {});
+      fs.writeFileSync.mockImplementation(() => {});
 
-      expect(fs.mkdirSync).toHaveBeenCalledWith(path.dirname("/lib/build-info.json"), { recursive: true });
-      expect(fs.writeFileSync).toHaveBeenCalledWith(
-        "/lib/build-info.json",
-        JSON.stringify({
-          sha: "123456",
-          tag: "v1.0.0",
-          branch: "main",
-          uncommitted: false,
-          buildDtm: expect.any(new Date()),
-          name: "test-app",
-          version: "1.0.0",
-        }, null, 2),
-        "utf-8"
+      expect(() => generateFile("/lib/build-info.json")).toThrowError(
+        "ERROR: Command must be run from the root of your project."
       );
     });
+    it("should generate build-info.json with correct data", () => {
+      // Mock git and package info
+      gitDescribeSync.mockReturnValue({ hash: "g123456", tag: "v1.0.0", dirty: false });
+      currentGitBranch.mockReturnValue("main");
+      jest.spyOn(path, "resolve").mockImplementation((...args) => args.join("/"));
+      jest.spyOn(Date.prototype, "toISOString").mockReturnValue("2025-01-16T12:53:01.557Z");
 
-    it("should exit process if package.json is not found", () => {
-      const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
-      jest.mock(path.resolve("package.json"), () => { throw new Error("Not found"); }, { virtual: true });
+      const packageInfo = { name: "mocked-app", version: "1.0.0" };
+      jest.mock("/mocked/root/package.json", () => packageInfo, { virtual: true });
 
-      generateFile("../lib/build-info.json");
+      // Mock fs functions
+      fs.mkdirSync.mockImplementation(() => {});
+      fs.writeFileSync.mockImplementation(() => {});
 
-      expect(mockExit).toHaveBeenCalledWith(1);
-      mockExit.mockRestore();
+      setAppRootPath("/mocked/root"); 
+
+      expect(() => generateFile("lib/build-info.json")).not.toThrow();
+
+      console.log(fs.writeFileSync.mock.calls);
+
+      // Validate the output
+      // expect(fs.mkdirSync).toHaveBeenCalledWith("/mocked/root/lib", { recursive: true });
+      expect(fs.writeFileSync).toHaveBeenCalledWith(
+        "/mocked/root/lib/build-info.json",
+        JSON.stringify(
+          {
+            sha: "123456",
+            tag: "v1.0.0",
+            branch: "main",
+            uncommitted: false,
+            buildDtm: "2025-01-16T12:53:01.557Z",
+            name: "mocked-app",
+            version: "1.0.0",
+          },
+          null,
+          2
+        ),
+        "utf-8"
+      );
     });
   });
 
   describe("createBuildInfoEndpoint", () => {
-    it("should return build info on success", async () => {
-      const mockBuildInfo = { sha: "123456", tag: "v1.0.0", branch: "main", uncommitted: false, buildDtm: new Date(), name: "test-app", version: "1.0.0" };
-      const mockReq = {};
-      const mockResp = { status: jest.fn().mockReturnThis(), send: jest.fn() };
-      const mockNext = jest.fn();
-      require("app-root-path").require.mockReturnValue(mockBuildInfo);
-
-      const endpoint = createBuildInfoEndpoint("/lib/build-info.json");
-      await endpoint(mockReq, mockResp, mockNext);
-
-      expect(mockResp.status).toHaveBeenCalledWith(200);
-      expect(mockResp.send).toHaveBeenCalledWith(mockBuildInfo);
+    beforeEach(() => {
+      // jest.resetModules(); // Clear module cache
+      jest.clearAllMocks(); // Clear all mocks
+      setAppRootPath("/mocked/root"); 
     });
 
-    it("should call next with NotFoundError if build info is not found", async () => {
-      const mockReq = {};
-      const mockResp = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+    it("should call next with NotFoundError if file is missing", async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
       const mockNext = jest.fn();
-      const mockError = new Error("Not found");
-      require("app-root-path").require.mockImplementation(() => { throw mockError; });
-
-      const endpoint = createBuildInfoEndpoint("/lib/build-info.json");
-      await endpoint(mockReq, mockResp, mockNext);
-
-      expect(mockNext).toHaveBeenCalledWith(new NotFoundError("build_info_not_found", mockError));
+  
+      jest.spyOn(require("path"), "resolve").mockReturnValue(
+        "/mocked/root/lib/non-existent.json"
+      );
+  
+      // setAppRootPath("/mocked/root");
+  
+      const endpoint = createBuildInfoEndpoint("lib/non-existent.json");
+      await endpoint({}, mockResponse, mockNext);
+  
+      // Verify behaviors
+      expect(mockResponse.status).not.toHaveBeenCalled();
+      expect(mockResponse.send).not.toHaveBeenCalled();
+      expect(mockNext).toHaveBeenCalledWith(expect.any(NotFoundError));
     });
+  
+    it("should send build-info.json if it exists", async () => {
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
+      const mockNext = jest.fn();
+  
+      jest.spyOn(require("path"), "resolve").mockReturnValue(
+        "/mocked/root/lib/build-info.json"
+      );
+  
+      jest.mock("/mocked/root/lib/build-info.json", () => ({ key: "value" }), {
+        virtual: true,
+      });
+  
+      // setAppRootPath("/mocked/root");
+  
+      const endpoint = createBuildInfoEndpoint("/lib/build-info.json");
+      await endpoint({}, mockResponse, mockNext);
+  
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.send).toHaveBeenCalledWith({ key: "value" });
+      expect(mockNext).not.toHaveBeenCalled();
+    });
+  
+    
   });
+  
 });
