@@ -9,7 +9,7 @@ if (process.version.match(/v(\d+)\./)[1] < 6) {
   );
 } else {
   const standardVersion = require('../src');
-  const {cmdParser} = require('../src/command');
+  const cmdParser = require('../src/command');
   const yargs = require('yargs');
   const argv = yargs.argv;
 
