@@ -32,7 +32,6 @@
     "test:unit": "jest --testPathIgnorePatterns test/git.integration-test.js",
     "test:git-integration": "jest --testPathPattern test/git.integration-test.js",
     "release": "bin/cli.js",
-    "prepublishOnly": "npm run build",
     "prebuild": "rm -rf ./dist",
     "publish:prod": "npm publish --registry",
     "coverage": "nyc report --reporter=lcov"
