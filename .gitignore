@@ -1,5 +1,7 @@
 # Node modules
 node_modules/
+.nyc_output
+npm-debug.log
 
 # Output directories
 /dist
@@ -30,7 +32,12 @@ coverage/
 # IDE specific
 .idea/
 .vscode/
+/.project
+/.settings
 
 # Dependencies
-package-lock.json
 yarn.lock
+
+# temp dirs
+*-temp
+tmp

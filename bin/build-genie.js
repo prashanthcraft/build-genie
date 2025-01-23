@@ -1,30 +1,27 @@
 #!/usr/bin/env node
 
-const { generateFile, createBuildInfoEndpoint } = require('../dist/index');
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
+const { handleGenerateFile, handleCreateEndpoint } = require('../src/build-genie-command');
 
-const argv = yargs(hideBin(process.argv))
-  .command('generate-file', 'Generate the build info file', {
-    filepath: {
-      description: 'The path where the build information file should be generated',
-      alias: 'f',
-      type: 'string',
-      default: '/lib/build-info.json'
-    }
-  }, (args) => {
-    generateFile(args.filepath);
-  })
-  .command('create-endpoint', 'Create a build information endpoint', {
-    buildInfoPath: {
-      description: 'The path to the build information file',
-      alias: 'b',
-      type: 'string',
-      default: '/lib/build-info.json'
-    }
-  }, () => {
-    console.log("Create an endpoint using the exported function in your server.");
-  })
-  .help()
-  .alias('help', 'h')
-  .argv;
+/* istanbul ignore if */
+if (process.version.match(/v(\d+)\./)[1] < 6) {
+  console.error(
+    'build-genie: Node v6 or greater is required. `build-genie` did not run.',
+  );
+} else {
+  const standardVersion = require('../src');
+  const cmdParser = require('../src/command');
+  const yargs = require('yargs');
+  const argv = yargs.argv;
+
+  const command = argv._[0]; // Get the first positional argument (command)
+
+  if (command === 'generate-file') {
+    handleGenerateFile(argv);
+  } else if (command === 'create-endpoint') {
+    handleCreateEndpoint(argv);
+  } else {
+    standardVersion(cmdParser.argv).catch(() => {
+      process.exit(1);
+    });
+  }
+}
